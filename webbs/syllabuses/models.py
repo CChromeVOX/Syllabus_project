@@ -99,7 +99,6 @@ class Syllabus(models.Model):
 
 class Literature(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, verbose_name='Дисциплина', related_name='literature_set')
-    number = models.IntegerField('Номер', null=True)
     title = models.TextField('Название', blank=False)
 
     def __str__(self):

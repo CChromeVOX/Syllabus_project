@@ -8,39 +8,19 @@
   <br/>
   <form method="post" id="literature-form">
       {% csrf_token %}
-      {{ literature_form.as_p }}
+      <input class="form-input" name="title">
       <button type="submit">Добавить литературу</button>
   </form>
   <!-- Отображение добавленной литературы -->
 <h3>Добавленная литература</h3>
-<ul>
-    {% for literature in syllabus.course.literature_set.all %}
+<ol>
+    {% for literature in literatures %}
         <li>{{ literature.title }}</li>
     {% endfor %}
-</ul>
+</ol>
 <br/>
-<a href="{% url 'next_step' %}" class="btn btn-primary btn-lg">Далее</a>
+<a href="{% url 'next_step' syllabus.id %}" class="btn btn-primary btn-lg">Далее</a>
 </div>
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script>
-$(document).ready(function() {
-  $('#literature-form').on('submit', function(event) {
-      event.preventDefault();
-      $.ajax({
-          type: 'POST',
-          data: $(this).serialize(),
-          success: function(data) {
-              $('#literature-form')[0].reset();  // Очищаем внесенные данные при успешном сохранении
-              alert('Литература успешно добавлена!');  // Выводим сообщение об успешном добавлении литературы
-          },
-          error: function(xhr, status, error) {
-              console.log(xhr.responseText);  // Выводим ошибку в консоль браузера при возникновении ошибки
-          }
-      });
-  });
-});
-</script>
 {% endblock %}

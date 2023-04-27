@@ -35,10 +35,10 @@ class SyllabusForm(forms.ModelForm):
 class SecondStepForm(forms.ModelForm):
     class Meta:
         model = Literature
-        fields = ['course', 'number', 'title']
+        fields = ['course','title']
         labels = {
             'course': 'Дисциплина',
-            'number': 'Номер',
+        
             'title': 'Название',
         }
 
