@@ -15,9 +15,11 @@
         <option value={{r.id}}>{{r.title}}</option>
         {% endfor %}
     </select>
+    <br/>
     <label>Обязательная</label>
     <input value="1" type="radio" name="mandatory" form = "literature-form">
-    <label>необязательная</label>
+    
+    <label>Дополнительная</label>
     <input value="0" type="radio" name="mandatory" form = "literature-form">
     <button type="submit">Добавить</button>
 </form>
@@ -31,7 +33,10 @@
         {% else %}
         Дополнительная
         {% endif %}
-
+        <form method="POST" action="{% url 'delete_literature' pk=literature.id syllabus_id=syllabus.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Удалить</button>
+        </form>
       </li>
 
   {% endfor %}

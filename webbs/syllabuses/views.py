@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render
 from django.shortcuts import render
+from django.urls import reverse
 from syllabuses.models import Syllabus, Literature, LiteratureInSyllabus
 from .forms import SyllabusForm, SecondStepForm
 from django.http import HttpResponseRedirect, JsonResponse
@@ -37,6 +38,11 @@ def next_step(request, syllabus_id: int):
                       'literaturesinsyllabus': LiteratureInSyllabus.objects.filter(syllabus = syllabus)
                     })
 
+def delete_literature(request, pk, syllabus_id):
+    literature = LiteratureInSyllabus.objects.get(pk=pk)
+    syllabus_id=syllabus_id
+    literature.delete()
+    return redirect(f'../../../next_step/{syllabus_id}')
 
 def add_literature(request, syllabus_id: int):
     syllabus = Syllabus.objects.get(pk=syllabus_id)
