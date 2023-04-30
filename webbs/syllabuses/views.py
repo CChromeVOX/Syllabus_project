@@ -1,8 +1,8 @@
 from django.shortcuts import redirect, render
 from django.shortcuts import render
-from syllabuses.models import Syllabus, Literature
+from syllabuses.models import Syllabus, Literature, LiteratureInSyllabus
 from .forms import SyllabusForm, SecondStepForm
-from django.http import JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse
 
 # Create your views here.
 def home(request):
@@ -22,7 +22,20 @@ def create_syllabus(request):
 
 def next_step(request, syllabus_id: int):
     syllabus = Syllabus.objects.get(pk=syllabus_id)
-    return render(request, 'syllabuses/next_step.html', {'syllabus': syllabus})
+    if request.method == "POST":
+        l = request.POST["liter"]
+        literature = Literature.objects.get(pk=l)
+        mandatory = request.POST["mandatory"]
+        LiteratureInSyllabus.objects.create(
+            syllabus = syllabus,
+            literature = literature,
+            mandatory = mandatory
+        )
+    return render(request, 'syllabuses/next_step.html',{
+                      'syllabus': syllabus, 
+                      'literatures': Literature.objects.filter(course=syllabus.course),
+                      'literaturesinsyllabus': LiteratureInSyllabus.objects.filter(syllabus = syllabus)
+                    })
 
 
 def add_literature(request, syllabus_id: int):
@@ -34,7 +47,7 @@ def add_literature(request, syllabus_id: int):
             course=syllabus.course,
             title=title,
         )
-        return redirect(f'literature_form/{syllabus.id}')
+
 
     return render(request, 'syllabuses/literature_form.html', 
                   {

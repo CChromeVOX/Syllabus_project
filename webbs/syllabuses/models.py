@@ -102,7 +102,17 @@ class Literature(models.Model):
     title = models.TextField('Название', blank=False)
 
     def __str__(self):
-        return f"{self.number}) {self.title}."
+        return f"{self.title}."
+    
+
+#Создаем связь с силлабусом для добавления обяз и необяз литературы
+class LiteratureInSyllabus(models.Model):
+    syllabus = models.ForeignKey(Syllabus, on_delete=models.CASCADE, null=True, verbose_name='Силлабус')
+    literature = models.ForeignKey(Literature, on_delete=models.CASCADE, null=True, verbose_name='Литература')
+    mandatory = models.BooleanField('Обязательная', default=0)
+
+    def __str__(self):
+        return f"{self.literature}."
 
 
 
