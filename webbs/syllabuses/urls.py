@@ -5,6 +5,9 @@ urlpatterns = [
     path('create_syllabus', views.create_syllabus, name="create_syllabus"),
     path('literature_form/<int:syllabus_id>', views.add_literature, name="literature_form"),
     path('literature/delete/<int:pk>/<int:syllabus_id>', views.delete_literature, name='delete_literature'),
+    path('module/delete/<int:pk>/<int:syllabus_id>', views.delete_module, name='delete_module'),
     path('next_step/<int:syllabus_id>', views.next_step, name="next_step"),
+    path('add_module/<int:syllabus_id>', views.add_module, name="add_module"),
+    path('half/<int:syllabus_id>', views.half, name="half"),
     
 ]

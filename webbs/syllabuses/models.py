@@ -116,7 +116,10 @@ class LiteratureInSyllabus(models.Model):
 
 
 
-
+class CourseLO(models.Model):
+    syllabus = models.ForeignKey(Syllabus, on_delete=models.CASCADE, null=True, verbose_name='Силлабус')
+    type = models.BooleanField('Тип РО', default=0)
+    info = models.TextField('Результаты обучения', blank=False)
 
 class Module(models.Model):
     syllabus = models.ForeignKey(Syllabus, on_delete=models.CASCADE, null=True)
@@ -126,7 +129,7 @@ class Module(models.Model):
     tasks = models.TextField('Задания', blank=False)
     course_lo = models.TextField('Результаты обучения', blank=False)
     questions = models.TextField('Вопросы по модулю', blank=False)
-    literature = models.TextField('Литература', blank=True)
+    literature = models.ForeignKey(LiteratureInSyllabus, on_delete=models.CASCADE, null=True)
     grading = models.TextField('Оценивание', blank=False)
     max_percent = models.IntegerField('Максимальный процент', null=True)
     max_weight = models.IntegerField('Максимальный вес', null=True)
