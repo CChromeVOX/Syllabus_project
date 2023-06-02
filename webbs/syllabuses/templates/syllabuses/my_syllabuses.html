@@ -1,0 +1,40 @@
+{% extends 'syllabuses/base.html' %}
+
+{% block content %}
+<div class="container">
+<br/>
+<h2>Мои силлабусы</h2>
+
+<table>
+  <tr>
+    <th>Название</th>
+    <th>Дисциплина</th> 
+    <th>Язык обучения</th>
+    <th>Семестр</th> 
+    <th>Статус</th> 
+    <th></th> 
+    <th></th>
+  </tr>
+  {% for s in syllabuses %}
+  <tr>
+    <td>{{s.syllabus_name}}</td>
+    <td>{{s.course}}</td>
+    <td>{{s.language_of_education}}</td>
+    <td>{{s.semester}}</td>
+    <td>{{s.status}}</td>
+    <td>        <a href="{% url 'syllabus_details' syllabus_id=s.id %}"> 
+        <button type="submit" class="btn btn-danger">Посмотреть</button>
+    </a></td>
+    <td>        <form method="POST" action="{% url 'delete_syllabus' syllabus_id=s.id %}"> 
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Удалить</button>
+      </form></td>
+  </tr>
+  {% endfor %}
+</table>
+
+
+
+
+</div>
+{% endblock %}

@@ -1,22 +1,39 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
-
+from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.utils.translation import gettext_lazy as _
 class School(models.Model):
     title = models.CharField('Название школы', max_length=255)
 
     def __str__(self):
         return f"{self.id} {self.title}"
 
-class CustomUser(models.Model):
-    first_name = models.CharField('Имя', max_length=255)
-    last_name = models.CharField('Фамилия', max_length=255)
+class CustomUser(AbstractUser):
     email = models.EmailField('Эл. Почта', max_length=255)
     prof = models.CharField('Должность', max_length=255)
-    
+    groups = models.ManyToManyField(
+        Group,
+        verbose_name=_('groups'),
+        blank=True,
+        related_name='customuser_set',  # Измененное значение related_name
+        related_query_name='user',
+    )
+
+    # Переопределение связи user_permissions
+    user_permissions = models.ManyToManyField(
+        Permission,
+        verbose_name=_('user permissions'),
+        blank=True,
+        related_name='customuser_set',  # Измененное значение related_name
+        related_query_name='user',
+    )
     def get_full_name(self):
-        return f"{self.last_name} {self.first_name[0]}."
+        return f"{self.last_name} {self.first_name}."
     def __str__(self):
         return self.get_full_name()
+    class Meta:
+        verbose_name = 'Преподаватель'
+
+    
 
 
 
@@ -86,7 +103,7 @@ class Syllabus(models.Model):
     time_place = models.TextField('Время и место проведения',blank=False)
     instructor = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, verbose_name='Инструктор/Преподаватель')
     course_objective = models.TextField('Цель курса',blank=False)
-    document = models.FileField('Файл', null=True)
+    document = models.FileField('Файл', null=True, blank=True)
     agreed_with = models.ForeignKey(Director, on_delete=models.CASCADE, null=True, verbose_name='Согласовывает: ')
     status = models.ForeignKey(Status, on_delete=models.CASCADE, null=True)
     course_philosophy = models.TextField('Философия курса', blank=False)

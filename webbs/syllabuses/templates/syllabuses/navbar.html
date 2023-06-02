@@ -15,30 +15,35 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'home' %}">Контакты</a>
         </li>
+        {% if user.is_authenticated %}
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="{% url 'home' %}" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Силлабус
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="#">Мои силлабусы</a>
+              <a class="dropdown-item" href="{% url 'my_syllabuses' %}">Мои силлабусы</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Создать новый</a>
-              <a class="dropdown-item" href="#">Дополнить существующий</a>
-              <a class="dropdown-item" href="#">Скачать силлабус</a>
+              <a class="dropdown-item" href="{% url 'create_syllabus' %}">Создать новый</a>
+              <a class="dropdown-item" href="">Скачать силлабус</a>
               
             </div>
           </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="{% url 'home' %}" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Пользователь
+            {{user.first_name}} {{user.last_name}}
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="#">Редактировать профиль</a>
+            <a class="dropdown-item" href="{% url 'edit_profile' %}">Редактировать профиль</a>
      
-            <a class="dropdown-item" href="#">Выйти из аккаунта</a>
+            <a class="dropdown-item" href="{% url 'logout' %}">Выйти из аккаунта</a>
             
           </div>
         </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'login' %}">Войти в систему</a>
+        </li>
+        {% endif %}
       </ul>
     </div>
   </nav>
